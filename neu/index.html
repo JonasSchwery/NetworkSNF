@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Visualisierung der Daten "RNA and Disease"</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+/* https://mdbootstrap.com/css/colors/ schema mit verschiedenen Farben */
+    <script>
+    $(document).ready(function(){
+      // Add smooth scrolling to all links in navbar + footer link
+      $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
+
+      // Make sure this.hash has a value before overriding default behavior
+      if (this.hash !== "") {
+
+        // Prevent default anchor click behavior
+        event.preventDefault();
+
+        // Store hash
+        var hash = this.hash;
+
+        // Using jQuery's animate() method to add smooth page scroll
+        // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+        $('html, body').animate({
+          scrollTop: $(hash).offset().top
+        }, 900, function(){
+
+          // Add hash (#) to URL when done scrolling (default click behavior)
+          window.location.hash = hash;
+          });
+        } // End if 
+      });
+    })
+    </script>
+</head>
+<style>
+.navbar {
+    margin-bottom: 0;
+    background-color: #2f2f2f;
+    z-index: 9999;
+    border: 0;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    letter-spacing: 4px;
+    border-radius: 0;
+}
+    .body {
+        font-size: 12px;
+    }
+.navbar li a, .navbar .navbar-brand {
+    color: #fff !important;
+}
+.navbar-nav li a:hover, .navbar-nav li.active a {
+    color: #f4511e !important;
+    background-color: #fff !important;
+}
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #fff !important;
+}
+ .d3-tip {
+      line-height: 1;
+      padding: 6px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+ 
+    /* Creates a small triangle extender for the tooltip */
+    .d3-tip:after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
+    }
+ 
+    /* Style northward tooltips specifically */
+    .d3-tip.n:after {
+      margin: -2px 0 0 0;
+      top: 100%;
+      left: 0;
+    }
+    
+.hovernode{
+     
+  stroke:blue;
+  stroke-width:5px;
+}
+  
+ #wrapper1 {
+    position: relative;
+    height: 60%;
+    width: 100%;
+    padding: 0;
+    max-height: 500px;
+    max-width: 1000px;
+}
+#wrapper1 > svg {
+    position: relative;
+    height: 60%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    max-height: 500px;
+    max-width: 1000px;
+}
+ #wrapper2 {
+    position: relative;
+    height: 60%;
+    width: 100%;
+    padding: 0;
+    max-height: 500px;
+    max-width: 1000px;
+}
+#wrapper2 > svg {
+    position: relative;
+    height: 60%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    max-height: 500px;
+    max-width: 1000px;
+}
+ #wrapper3 {
+    position: relative;
+    height: 60%;
+    width: 100%;
+    padding: 0;
+    max-height: 500px;
+    max-width: 1000px;
+}
+#wrapper3 > svg {
+    position: relative;
+    height: 60%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    max-height: 500px;
+    max-width: 1000px;
+}  
+.links line {
+  stroke: grey;
+  stroke-opacity: 0.5;
+}
+    
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 0.5px;
+}
+    
+.my-selector {
+   text-anchor: "middle";
+   background: "grey";
+   font-family: "Arial";
+   color: red;
+   font-size: 16;     
+    }    
+
+.legend {                                                   
+    font-size: 10px;
+    font-family: "Montserrat", sans-serif;
+}  
+
+rect {                                                      
+    stroke-width: 2;                                          
+}
+</style>
+    
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#visualisierung">Die Visualisierung</a></li>
+        <li><a href="#projekt">Das Projekt</a></li>
+        <li><a href="#datenstory">Dokumentation</a></li>
+        <li><a href="#kontakt">Über uns</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    <script>
+        $(document).ready(function(){
+
+            $("#year1").click(function(){
+            $("#wrapper").empty();
+            $( "#wrapper" ).load( "NetworkYear1.html" );
+            });
+            
+            $("#year1-2").click(function(){
+            $("#wrapper").empty();
+             $('#wrapper').load('NetworkYear1-Year2.html');
+            });
+                
+            $("#year1-3").click(function(){
+            $("#wrapper").empty();
+            $("#wrapper").load("NetworkYear1-Year3.html");
+             });
+            
+            $("#wegDamit").click(function(){
+            $("#wrapper").empty();
+             });
+        });
+
+</script>
+    
+    <div class="container-fluid bg-1 text-center">
+    <img src="Startbild.jpg" class="img-responsive img-circle" style="display:inline" alt="NCCR">
+    </div>
+    
+    <div class="container-fluid bg-2 text-center">
+        <p class="lead">Eine Webapplikation entwickelt zur Visualisierung von Daten des Schweizerischen Nationalfonds (SNF).
+            Erstellt durch Jonas Schwery und Matthias Busset mithilfe der JavaScript-Bibliothek D3.js im Rahmen der Open Data Vorlesung an der Universität Bern im Frühlingssemester 2017.
+        </p>
+    </div>
+
+    <div id="visualisierung" class="container-fluid bg-3 text-center">
+        <h2>Die Visualisierung</h2>
+        <p>Durch klicken auf einen Button wird das jeweilige Netzwerk geöffnet.</p>
+
+            <div class="container-fluid text-center" style="padding-top:10px; padding-bottom:0px;">
+            <button id="year1" href="#" class="btn btn-default btn-center">Netzwerk Jahr 1</button> 
+            <button id="year1-2" href="#" class="btn btn-default btn-center">Netzwerk Jahre 1-2</button> 
+            <button id="year1-3" href="#" class="btn btn-default btn-center">Netzwerk Jahre 1-3</button>
+            <button id="wegDamit" href="#" class="btn btn-default btn-center">weg damit!</button>
+            <div id="wrapper" style="text-center">
+            <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+<script src="d3-tip.js"></script>
+<script>
+    
+    var width = 700,
+    height = 450,
+    wrapper = d3.select("#wrapper1")
+        .attr(
+            "style",
+            "padding-bottom: " + Math.ceil(height * 100 / width) + "%"
+        )
+        .append("svg")
+        .attr("viewBox", "0 0 " + width + " " + height);  
+    
+var colorScheme = d3.scaleOrdinal(d3.schemeCategory20b);
+    
+var simulation = d3.forceSimulation()
+    .force("link", d3.forceLink().id(function(d) { return d.id; }))
+    .force("charge", d3.forceManyBody())
+    .force("center", d3.forceCenter(width / 2, height / 2))
+    .force("collide", d3.forceCollide().radius(function(d) { return d.r + 10; }).iterations(5));
+
+var nodesLink = [
+ {
+   "id": "Department of Bioengineering and Therapeutic Sciences, California Institute for Quantitative Biosciences (QB3), University of California, San Francisco",
+   "group": "10.1016/j.cell.2014.07.044"
+ },
+ {
+   "id": "Faculty of Science, University of Zurich",
+   "group": "10.1016/j.cell.2014.07.044"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.cell.2014.07.044"
+ },
+ {
+   "id": "Institute of Molecular Systems Biology, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.cell.2014.07.044"
+ },
+ {
+   "id": "Institute of Biochemistry, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.febslet.2014.08.013"
+ },
+ {
+   "id": "Molecular Life Sciences Ph.D. Program",
+   "group": "10.1016/j.febslet.2014.08.013"
+ },
+ {
+   "id": "Competence Center of Systems Physiology and Metabolic Disease, ETH Zurich",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "Computational and Systems Biology Program, Massachusetts Institute of Technology",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "Department of Biology, Massachusetts Institute of Technology",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "Howard Hughes Medical Institute and Whitehead Institute for Biomedical Research",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "Institute of Biochemistry, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.tcb.2014.08.007"
+ },
+ {
+   "id": "Swiss Institute for Experimental Cancer Research (ISREC), School of Life Sciences, Ecole Polytechnique Fédérale de Lausanne (EPFL)",
+   "group": "10.1016/j.tcb.2014.08.007"
+ },
+ {
+   "id": "Faculty of Science, University of Zurich",
+   "group": "10.1038/nature13895"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1038/nature13895"
+ },
+ {
+   "id": "Institute of Molecular Systems Biology, Department of Biology, ETH Zurich",
+   "group": "10.1038/nature13895"
+ },
+ {
+   "id": "Bioinformatics and Biostatistics Core Facility, EPFL, Swiss Institute of Bioinformatics",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Ecole Polytechnique Fédérale de Lausanne (EPFL), School of Life Sciences",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Institute of Molecular Cancer Research, University of Zurich",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Swiss Institute for Experimental Cancer Research (ISREC), School of Life Sciences, Ecole Polytechnique Fédérale de Lausanne (EPFL)",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Wistar Institute",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Department of Chemistry and Biochemistry, University of Bern",
+   "group": "10.1080/15476286.2014.996459"
+ },
+ {
+   "id": "Graduate School for Cellular and Biomedical Sciences, University of Bern",
+   "group": "10.1080/15476286.2014.996459"
+ },
+ {
+   "id": "Department of Biochemistry, Henry Wellcome Laboratories of Structural Biology, University of Leicester",
+   "group": "10.1093/nar/gku1116"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1093/nar/gku1116"
+ },
+ {
+   "id": "Biozentrum, University of Basel",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Competence Center of Systems Physiology and Metabolic Disease, ETH Zurich",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Department of Clinical Sciences Malmö, Lund University Diabetes Centre, Lund University",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Faculty of Medicine, University of Zurich",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Institute of Laboratory Animal Science, Vetmeduni Vienna",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Oxford Centre for Diabetes, Endocrinology and Metabolism, University of Oxford, Churchill Hospital",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Université de Lille 2, INSERM, European Genomic Institute for Diabetes",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Biozentrum, University of Basel",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "Department of Anaesthesiology and Pain Medicine, Inselspital, University of Bern",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "Friedrich Miescher Institute for Biomedical Research",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "Institute of Molecular Life Sciences, University of Zurich",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "Swiss Institute of Bioinformatics",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "University of Basel, Faculty of Science",
+   "group": "10.15252/embr.201540078"
+ }
+];	
+    
+var nodes = [
+ {
+   "id": "Bioinformatics and Biostatistics Core Facility, EPFL, Swiss Institute of Bioinformatics"
+ },
+ {
+   "id": "Biozentrum, University of Basel"
+ },
+ {
+   "id": "Competence Center of Systems Physiology and Metabolic Disease, ETH Zurich"
+ },
+ {
+   "id": "Computational and Systems Biology Program, Massachusetts Institute of Technology"
+ },
+ {
+   "id": "Department of Anaesthesiology and Pain Medicine, Inselspital, University of Bern"
+ },
+ {
+   "id": "Department of Biochemistry, Henry Wellcome Laboratories of Structural Biology, University of Leicester"
+ },
+ {
+   "id": "Department of Bioengineering and Therapeutic Sciences, California Institute for Quantitative Biosciences (QB3), University of California, San Francisco"
+ },
+ {
+   "id": "Department of Biology, Massachusetts Institute of Technology"
+ },
+ {
+   "id": "Department of Chemistry and Biochemistry, University of Bern"
+ },
+ {
+   "id": "Department of Clinical Sciences Malmö, Lund University Diabetes Centre, Lund University"
+ },
+ {
+   "id": "Ecole Polytechnique Fédérale de Lausanne (EPFL), School of Life Sciences"
+ },
+ {
+   "id": "Faculty of Medicine, University of Zurich"
+ },
+ {
+   "id": "Faculty of Science, University of Zurich"
+ },
+ {
+   "id": "Friedrich Miescher Institute for Biomedical Research"
+ },
+ {
+   "id": "Graduate School for Cellular and Biomedical Sciences, University of Bern"
+ },
+ {
+   "id": "Howard Hughes Medical Institute and Whitehead Institute for Biomedical Research"
+ },
+ {
+   "id": "Institute of Biochemistry, Department of Biology, ETH Zurich"
+ },
+ {
+   "id": "Institute of Laboratory Animal Science, Vetmeduni Vienna"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich"
+ },
+ {
+   "id": "Institute of Molecular Cancer Research, University of Zurich"
+ },
+ {
+   "id": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich"
+ },
+ {
+   "id": "Institute of Molecular Life Sciences, University of Zurich"
+ },
+ {
+   "id": "Institute of Molecular Systems Biology, Department of Biology, ETH Zurich"
+ },
+ {
+   "id": "Molecular Life Sciences Ph.D. Program"
+ },
+ {
+   "id": "Oxford Centre for Diabetes, Endocrinology and Metabolism, University of Oxford, Churchill Hospital"
+ },
+ {
+   "id": "Swiss Institute for Experimental Cancer Research (ISREC), School of Life Sciences, Ecole Polytechnique Fédérale de Lausanne (EPFL)"
+ },
+ {
+   "id": "Swiss Institute of Bioinformatics"
+ },
+ {
+   "id": "Université de Lille 2, INSERM, European Genomic Institute for Diabetes"
+ },
+ {
+   "id": "University of Basel, Faculty of Science"
+ },
+ {
+   "id": "Wistar Institute"
+ }
+];
+
+var links = [];         
+            
+    for (var k = 0; k < nodesLink.length; k++) {
+    for (var l = k + 1; l < nodesLink.length; l++) {
+        if (nodesLink[k].group === nodesLink[l].group) {
+            links.push({
+                source: nodesLink[k].id,
+                target: nodesLink[l].id
+            });
+        }
+    }
+};
+      
+var link = wrapper.append("g")
+    .attr("class", "links")
+    .selectAll("line")
+    .data(links)
+    .enter().append("line")
+      .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+    
+var value = [1,	2,	2,	1,	1,	1,	1,	1,	1,	1,	1,	1,	2,	1,	1,	1,	2,	1,	3,	1,	2,	1,	2,	1,	1,	2,	1,	1,	1,	1];
+ 
+var colorbyCountry= ["Switzerland","Switzerland","Switzerland","United States","Switzerland","United Kingdom","United States","United States",
+"Switzerland","Sweden","Switzerland","Switzerland","Switzerland","Switzerland","Switzerland","United States","Switzerland","Austria",
+"Switzerland","Switzerland","Switzerland","Switzerland","Switzerland","Switzerland","United Kingdom","Switzerland","Switzerland",
+"France","Switzerland","United States"];
+    
+    var tool_tip = d3.tip()
+      .attr("class", "d3-tip")
+      .offset([-8, 0])
+      .html(function(d) { return d.id; });
+    wrapper.call(tool_tip);
+    
+    var node = wrapper.append("g")
+    .attr("class", "nodes")
+    .selectAll("circle")
+    .data(nodes)
+    .enter().append("circle")
+      .attr("r", function(d,i) {return Math.sqrt(value[i])*4;} )
+      .attr("fill", function(d,i) {return colorScheme(colorbyCountry[i]);})
+        .on('mouseover', tool_tip.show)
+        .on('mouseout', tool_tip.hide)
+        .on("click", function(d) {alert(d.id);})
+      .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+     
+  simulation
+      .nodes(nodes)
+      .on("tick", ticked);
+
+  simulation.force("link")
+      .links(links);
+
+  simulation.force("charge")
+        .theta([1.5])
+        .distanceMax([130]);
+    
+  function ticked() {
+    link
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    node
+        .attr("cx", function(d) { return d.x = Math.max(5, Math.min(width - 5, d.x)); })
+        .attr("cy", function(d) { return d.y = Math.max(5, Math.min(height - 5, d.y)); });
+  };
+
+function dragstarted(d) {
+  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function dragged(d) {
+  d.fx = d3.event.x;
+  d.fy = d3.event.y;
+}
+
+function dragended(d) {
+  if (!d3.event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+
+}
+
+var legendSize = 18;                                
+
+var legendSpacing = 4;  
+
+var legend = wrapper.selectAll('.legend')                     
+          .data(colorScheme.domain())                                   
+          .enter()                                                
+          .append('g')                                            
+          .attr('class', 'legend')                              
+         .attr('transform', function(d, i) {                     
+            var height = legendSize + legendSpacing;       
+            var offset =  colorScheme.domain().length;    
+            var horz = 3 * legendSize - offset;                       
+            var vert = i * height *1.35 ;                       
+            return 'translate(' + horz /4 + ',' + vert + ')';        
+          });     
+             
+
+legend.append('rect')                                     
+       .attr('width', legendSize)                          
+          .attr('height', 15) 
+          
+          .style('fill', colorScheme)                                   
+          .style('stroke', colorScheme);                                
+
+legend.append('text')                                     
+          .attr('x', legendSize + legendSpacing)              
+          .attr('y', legendSize - legendSpacing)              
+          .text(function(d) { return d; });                       
+            
+</script>    
+            </div>
+            </div>
+    </div>
+        
+    <div id="projekt" class="container-fluid bg-11 text-center">
+        <h2>Die NFS und das Projekt «RNA &amp; Disease» kurz erklärt</h2>
+        <p>In diesem Abschnitt stellen wir Ihnen kurz den Schweizerischen Nationalfonds (SNF) und das Projekt «RNA &amp; Disease» vor. Der SNF fördert im Auftrag des Bundes die Grundlagenforschung in allen wissenschaftlichen Disziplinen, von Geschichte über Medizin bis zu den Ingenieurwissenschaften. Er unterstützt jährlich über 3200 Projekte mit rund 14'800 beteiligten Forschenden. Er ist damit die wichtigste Schweizer Institution zur Förderung der wissenschaftlichen Forschung. Mehr Informationen finden Sie auf der <a href="http://www.snf.ch/de/derSnf/portraet/Seiten/default.aspx" target="_blank">Seite des SNF.</a> <br/>
+            
+        <br/>Die Nationalen Forschungsschwerpunkte (NFS) fördern langfristig angelegte Forschungsvorhaben zu Themen von strategischer Bedeutung für die Zukunft der schweizerischen Wissenschaft, Wirtschaft und Gesellschaft. Sie sind von drei Hauptaspekten geprägt:
+            
+                        <li>exzellente und international sichtbare Forschung</li>
+                        <li>Wissens- und Technologietransfer</li>
+                        <li>Ausbildung und Gleichstellung</li><br/>
+                        
+        Das Management der einzelnen NFS ist jeweils an einer Hochschule oder einer anderen profilierten Forschungsinstitution angesiedelt. Neben den Forschungsgruppen dieser Heiminstitution verfügt ein Forschungsschwerpunkt auch über ein Netzwerk, in das weitere Teams aus der ganzen Schweiz eingebunden sind. Dadurch tragen die NFS zur besseren Strukturierung der schweizerischen Forschungslandschaft bei. Mehr Informationen finden Sie wiederum auf der <a href="http://www.snf.ch/de/fokusForschung/nationale-forschungsschwerpunkte/Seiten/default.aspx" target="_blank">Seite des SNF.</a><br/>
+            
+        Um genau solch einen Forschungsschwerpunkt handelt es sich beim Projekt <strong>«RNA &amp; Disease»</strong> unter der Leitung des National Center of Competence in Research (NCCR). Es ist ein koordiniertes, interdisziplinäres Forschungsprogramm, welches 22 Forschungsgruppen aus Bern, Zürich, Basel, Genf und Lausanne zusammenbringt. Geleitet wird das Projekt von Prof. Oliver Mühlemann (Universität Bern) als Direktor sowie Prof. Frédéric Allain als co-Direktor.<br/>
+    </div>
+            
+    <div class="container-fluid bg-15 text-center">
+        <h3>Was ist die RNA?</h3>
+        <div class="row">
+        <div class="col-sm-6">
+        <img src="RNA.jpg" class="img-responsive img-circle img-center" alt="RNA">
+        </div>
+        <div class="col-sm-6 text-center" style="padding-top:40px;">
+        <p>
+        Die Ribonukleinsäure (RNS, englisch RNA) ist das zentrale Molekül des Lebens: RNS ist die Trägerin von genetischer Information, fungiert als Biokatalysator und sie übt entscheidende regulatorische Funktionen in den Zellen aus. Die Pfeile in der Abbildung zeigen den Fluss der genetischen Information und der regulatorischen Funktionen. Mehr Informationen finden Sie <a href="https://www.nccr-rna-and-disease.ch/tiki-index.php" target="_blank">auf der Projektseite</a>.</p>
+        </div>
+        </div>
+        </div>
+    
+    <div id="datenstory" class="container-fluid bg-14 text-center">    
+        <h2>Dokumentation</h2>
+        <p>
+        Auf dieser Seite befinden sich "nur" die Visualisierung und ein kurzer Beschrieb des Projekts "NCCR RNA &amp; Disease". Für eine ausführlichere Dokumentation der App und der Daten <a href="Dokumentation.html" target="_blank">klicken Sie bitte hier</a>.</p>
+        <div class="container-fluid bg-12 text-center">    
+        <img src="datensatz1.jpg" class="img-responsive" style="display:inline" alt="NCCR">
+        <p><br/><em>Abbildung:</em> Ausschnitt aus zwei Datensätzen.</p>    
+    </div>
+    </div>
+    
+    <div id="kontakt" class="container-fluid bg-13 text-center">
+        <h2>Die Ersteller</h2>
+        <p>Bei Fragen zur Visualisierung stehen wir Ihnen gerne zur Verfügung.</p>
+         <div class="row">
+            <div class="col-sm-6">
+            <div class="well">
+                <p><span class="glyphicon glyphicon-user"></span> Matthias Busset</p>
+                <p>Masterstudent Betriebswirtschaftslehre mit Vertieftung Wirtschaftsinformatik</p>
+                <p><span class="glyphicon glyphicon-map-marker"></span> Bern, Schweiz</p>
+                <p><span class="glyphicon glyphicon-envelope"></span> matthias.busset@gmail.com</p>
+             </div>
+             </div>
+            <div class="col-sm-6">
+                <div class="well">
+                    <p><span class="glyphicon glyphicon-user"></span> Jonas Schwery</p>
+                    <p>Bachelorstudent Volkwirtschaftslehre mit Minor Betriebswirtschaftslehre</p>
+                <p><span class="glyphicon glyphicon-map-marker"></span> Bern, Schweiz</p>
+                <p><span class="glyphicon glyphicon-envelope"></span> jonas.schwery@students.unibe.ch</p>
+             </div>
+             </div>
+        </div>
+    </div>
+    
+    <footer class="container-fluid bg-8 text-center">
+      <p>Bootstrap Theme Made with <a href="https://www.w3schools.com">www.w3schools.com</a></p> 
+    </footer>
+    
+</body>
+</html>
