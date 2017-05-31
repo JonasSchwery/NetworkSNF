@@ -1,0 +1,11 @@
+{
+"title": "Publikationsdaten des SNF",
+"description": "Es handelt sich um ein Netzwerk, welches die Entwicklung der Publikationsdaten vom Projekt 'RNA & Disease' darstellt. Das Projekt wird vom Schweizerischen Nationalfonds finanziert."
+"authors": [
+    {"name": "Matthias Busset", "email": "matthias.busset@gmail.com"},
+    {"name": "Jonas Schwery", "email": "jonas.schwery@students.unibe.ch"}
+],
+"date": "2017-06-01",
+"category": "research",
+"software_license": "GNU General Public License v3"
+}

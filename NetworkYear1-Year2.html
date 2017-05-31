@@ -1,0 +1,1031 @@
+<div id="wrapper2">
+<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+<script src="/js/d3-tip.js"></script>
+<script>
+    
+var width = 700,
+    height = 430,
+    wrapper = d3.select("#wrapper2")
+        .attr(
+            "style",
+            "padding-bottom: " + Math.ceil(height * 100 / width) + "%"
+        )
+        .append("svg")
+        .attr("viewBox", "0 0 " + width + " " + height);  
+    
+var colorScheme = d3.scaleOrdinal(d3.schemeCategory20b);
+    
+var simulation = d3.forceSimulation()
+    .force("link", d3.forceLink().id(function(d) { return d.id; }))
+    .force("charge", d3.forceManyBody())
+    .force("center", d3.forceCenter(width / 2, height / 2))
+    .force("collide", d3.forceCollide().radius(function(d) { return d.r + 10; }).iterations(5));
+
+var nodesLink =[
+ {
+   "id": "Center for Integrative Genomics, Génopode, University of Lausanne",
+   "group": "10.1101/gr.195404.115"
+ },
+ {
+   "id": "Université de Lille 2, INSERM, European Genomic Institute for Diabetes",
+   "group": "10.1038/nm.3862"
+ },
+ {
+   "id": "Université de Lille 2, INSERM, European Genomic Institute for Diabetes",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Babraham Institute",
+   "group": "10.1038/nm.3862"
+ },
+ {
+   "id": "Institute of Laboratory Animal Science, University of Veterinary Medicine Vienna",
+   "group": "10.1038/nm.3862"
+ },
+ {
+   "id": "Institute of Laboratory Animal Science, University of Veterinary Medicine Vienna",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Cell Isolation and Transplantation Center, Department of Surgery, University Hospitals and University of Geneva",
+   "group": "10.1038/nm.3862"
+ },
+ {
+   "id": "Institute of Organic Chemistry, Center for Molecular Biosciences Innsbruck, University of Innsbruck",
+   "group": "10.1073/pnas.1505231112"
+ },
+ {
+   "id": "Institute of Neuroscience, Soochow University",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "Wistar Institute",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Research Group Recombinant Protein Expression, Helmholtz Centre for Infection Research",
+   "group": "10.1038/ncomms8646"
+ },
+ {
+   "id": "Faculty of Medicine, University of Zurich",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Faculty of Medicine, University of Zurich",
+   "group": "10.1074/jbc.M115.676734"
+ },
+ {
+   "id": "Faculty of Science, University of Zurich",
+   "group": "10.1016/j.cell.2014.07.044"
+ },
+ {
+   "id": "Faculty of Science, University of Zurich",
+   "group": "10.1038/nature13895"
+ },
+ {
+   "id": "Faculty of Science, University of Zurich",
+   "group": "10.1126/science.aaa3872"
+ },
+ {
+   "id": "Institute of Molecular Cancer Research, University of Zurich",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Institute of Molecular Life Sciences, University of Zurich",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "University of Zurich",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Department of Gene Expression, Institute of Molecular Biology and Biotechnology, Adam Mickiewicz University",
+   "group": "10.1093/nar/gkv794"
+ },
+ {
+   "id": "Friedrich Miescher Institute for Biomedical Research",
+   "group": "10.1016/j.ymeth.2015.06.013"
+ },
+ {
+   "id": "Friedrich Miescher Institute for Biomedical Research",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "MRC Clinical Sciences Centre, Imperial College London, Hammersmith Hospital Campus",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Biozentrum, University of Basel",
+   "group": "10.1126/science.aaa3870"
+ },
+ {
+   "id": "Biozentrum, University of Basel",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "Biozentrum, University of Basel",
+   "group": "10.1007/s00109-015-1326-7"
+ },
+ {
+   "id": "Biozentrum, University of Basel",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Swiss Institute for Experimental Cancer Research (ISREC), School of Life Sciences, Ecole Polytechnique Fédérale de Lausanne (EPFL)",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Howard Hughes Medical Institute and Whitehead Institute for Biomedical Research",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "MRC Clinical Sciences Centre, Imperial College London, Hammersmith Hospital",
+   "group": "10.1038/nm.3862"
+ },
+ {
+   "id": "Department of Anaesthesiology and Pain Medicine, Inselspital, University of Bern",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "Department of Chemistry and Biochemistry, University of Bern",
+   "group": "10.1080/15476286.2014.996459"
+ },
+ {
+   "id": "Department of Chemistry and Biochemistry, University of Bern",
+   "group": "10.1073/pnas.1505231112"
+ },
+ {
+   "id": "Department of Chemistry and Biochemistry, University of Bern",
+   "group": "10.1093/nar/gkv794"
+ },
+ {
+   "id": "Department of Clinical Research, University of Bern",
+   "group": "10.1093/nar/gkv794"
+ },
+ {
+   "id": "Graduate School for Cellular and Biomedical Sciences, University of Bern",
+   "group": "10.1080/15476286.2014.996459"
+ },
+ {
+   "id": "Graduate School for Cellular and Biomedical Sciences, University of Bern",
+   "group": "10.1093/nar/gkv794"
+ },
+ {
+   "id": "Institute of Cell Biology, University of Bern",
+   "group": "10.1093/nar/gkv794"
+ },
+ {
+   "id": "Department of Metabolic Diseases, Jagiellonian University Medical College",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Oxford NIHR Biomedical Research Centre, Churchill Hospital",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Computational and Systems Biology Program, Massachusetts Institute of Technology",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "Department of Biology, Massachusetts Institute of Technology",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "Massachusetts Institute of Technology",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "University of Basel, Faculty of Science",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "Department of Bioengineering and Therapeutic Sciences, California Institute for Quantitative Biosciences (QB3), University of California, San Francisco",
+   "group": "10.1016/j.cell.2014.07.044"
+ },
+ {
+   "id": "University of North Carolina at Chapel Hill",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "Competence Center of Systems Physiology and Metabolic Disease, ETH Zurich",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "Competence Center of Systems Physiology and Metabolic Disease, ETH Zurich",
+   "group": "10.1038/nm.3862"
+ },
+ {
+   "id": "Competence Center of Systems Physiology and Metabolic Disease, ETH Zurich",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Institute of Biochemistry, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.febslet.2014.08.013"
+ },
+ {
+   "id": "Institute of Biochemistry, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.tcb.2014.08.007"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1093/nar/gku1116"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.cell.2014.07.044"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1038/nature13895"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1038/ncomms8646"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1126/science.aaa3870"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "group": "10.1126/science.aaa3872"
+ },
+ {
+   "id": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "id": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich",
+   "group": "10.1038/nm.3862"
+ },
+ {
+   "id": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich",
+   "group": "10.1074/jbc.M115.676734"
+ },
+ {
+   "id": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Institute of Molecular Systems Biology, Department of Biology, ETH Zurich",
+   "group": "10.1016/j.cell.2014.07.044"
+ },
+ {
+   "id": "Institute of Molecular Systems Biology, Department of Biology, ETH Zurich",
+   "group": "10.1038/nature13895"
+ },
+ {
+   "id": "Institute of Molecular Systems Biology, Department of Biology, ETH Zurich",
+   "group": "10.1126/science.aaa3872"
+ },
+ {
+   "id": "Bioinformatics and Biostatistics Core Facility, EPFL, Swiss Institute of Bioinformatics",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Swiss Institute of Bioinformatics",
+   "group": "10.15252/embr.201540078"
+ },
+ {
+   "id": "Vital-IT, Swiss Institute of Bioinformatics",
+   "group": "10.1101/gr.195404.115"
+ },
+ {
+   "id": "Department of Applied Mathematics and Statistics, Stony Brook University",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "Molecular and Cellular Biology Program, Stony Brook University",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "Stony Brook University",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "Howard Hughes Medical Institute, Laboratory of RNA Molecular Biology, The Rockefeller University",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Oxford Centre for Diabetes, Endocrinology and Metabolism, Churchill Hospital, University of Oxford",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Oxford Centre for Diabetes, Endocrinology and Metabolism, University of Oxford, Churchill Hospital",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Ecole Polytechnique Fédérale de Lausanne (EPFL), School of Life Sciences",
+   "group": "10.1038/ncomms6379"
+ },
+ {
+   "id": "Swiss Institute for Experimental Cancer Research (ISREC), School of Life Sciences, Ecole Polytechnique Fédérale de Lausanne (EPFL)",
+   "group": "10.1016/j.tcb.2014.08.007"
+ },
+ {
+   "id": "Department of Clinical Sciences Malmö, Lund University Diabetes Centre, Lund University",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "Cold Spring Harbor Laboratory, Cold Spring Harbor",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "University of California, San Diego",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "Department of Biochemistry, Henry Wellcome Laboratories of Structural Biology, University of Leicester",
+   "group": "10.1093/nar/gku1116"
+ },
+ {
+   "id": "Wellcome Trust Centre for Human Genetics, University of Oxford",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Architecture et Réactivité des ARN, CNRS/Université de Strasbourg, Institut de Biologie Moléculaire et Cellulaire",
+   "group": "10.1073/pnas.1505231112"
+ },
+ {
+   "id": "Max Planck Institute for Biology of Ageing",
+   "group": "10.1016/j.ymeth.2015.06.013"
+ },
+ {
+   "id": "Molecular Life Sciences Ph.D. Program",
+   "group": "10.1016/j.febslet.2014.08.013"
+ },
+ {
+   "id": "Institute of Laboratory Animal Science, Vetmeduni Vienna",
+   "group": "10.1172/JCI73066"
+ },
+ {
+   "id": "University Hospital",
+   "group": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "id": "Envisagenics, Inc.",
+   "group": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "id": "Roche Innovation Center Copenhagen",
+   "group": "10.1016/j.molcel.2015.09.005"
+ }
+];	
+    
+var nodes = [
+ {
+   "id": "Bioinformatics and Biostatistics Core Facility, EPFL, Swiss Institute of Bioinformatics"
+ },
+ {
+   "id": "Cold Spring Harbor Laboratory, Cold Spring Harbor"
+ },
+ {
+   "id": "Babraham Institute"
+ },
+ {
+   "id": "Department of Clinical Sciences Malmö, Lund University Diabetes Centre, Lund University"
+ },
+ {
+   "id": "Institute of Laboratory Animal Science, University of Veterinary Medicine Vienna"
+ },
+ {
+   "id": "Center for Integrative Genomics, Génopode, University of Lausanne"
+ },
+ {
+   "id": "Architecture et Réactivité des ARN, CNRS/Université de Strasbourg, Institut de Biologie Moléculaire et Cellulaire"
+ },
+ {
+   "id": "Competence Center of Systems Physiology and Metabolic Disease, ETH Zurich"
+ },
+ {
+   "id": "Computational and Systems Biology Program, Massachusetts Institute of Technology"
+ },
+ {
+   "id": "Department of Anaesthesiology and Pain Medicine, Inselspital, University of Bern"
+ },
+ {
+   "id": "Department of Applied Mathematics and Statistics, Stony Brook University"
+ },
+ {
+   "id": "Department of Biochemistry, Henry Wellcome Laboratories of Structural Biology, University of Leicester"
+ },
+ {
+   "id": "Department of Bioengineering and Therapeutic Sciences, California Institute for Quantitative Biosciences (QB3), University of California, San Francisco"
+ },
+ {
+   "id": "Department of Biology, Massachusetts Institute of Technology"
+ },
+ {
+   "id": "Department of Chemistry and Biochemistry, University of Bern"
+ },
+ {
+   "id": "Department of Clinical Research, University of Bern"
+ },
+ {
+   "id": "Biozentrum, University of Basel"
+ },
+ {
+   "id": "Department of Gene Expression, Institute of Molecular Biology and Biotechnology, Adam Mickiewicz University"
+ },
+ {
+   "id": "Department of Metabolic Diseases, Jagiellonian University Medical College"
+ },
+ {
+   "id": "Ecole Polytechnique Fédérale de Lausanne (EPFL), School of Life Sciences"
+ },
+ {
+   "id": "Envisagenics, Inc."
+ },
+ {
+   "id": "Faculty of Medicine, University of Zurich"
+ },
+ {
+   "id": "Faculty of Science, University of Zurich"
+ },
+ {
+   "id": "Friedrich Miescher Institute for Biomedical Research"
+ },
+ {
+   "id": "Graduate School for Cellular and Biomedical Sciences, University of Bern"
+ },
+ {
+   "id": "Howard Hughes Medical Institute and Whitehead Institute for Biomedical Research"
+ },
+ {
+   "id": "Howard Hughes Medical Institute, Laboratory of RNA Molecular Biology, The Rockefeller University"
+ },
+ {
+   "id": "Institute of Biochemistry, Department of Biology, ETH Zurich"
+ },
+ {
+   "id": "Institute of Cell Biology, University of Bern"
+ },
+ {
+   "id": "Cell Isolation and Transplantation Center, Department of Surgery, University Hospitals and University of Geneva"
+ },
+ {
+   "id": "Institute of Laboratory Animal Science, Vetmeduni Vienna"
+ },
+ {
+   "id": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich"
+ },
+ {
+   "id": "Institute of Molecular Cancer Research, University of Zurich"
+ },
+ {
+   "id": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich"
+ },
+ {
+   "id": "Institute of Molecular Life Sciences, University of Zurich"
+ },
+ {
+   "id": "Institute of Molecular Systems Biology, Department of Biology, ETH Zurich"
+ },
+ {
+   "id": "Institute of Neuroscience, Soochow University"
+ },
+ {
+   "id": "Institute of Organic Chemistry, Center for Molecular Biosciences Innsbruck, University of Innsbruck"
+ },
+ {
+   "id": "Massachusetts Institute of Technology"
+ },
+ {
+   "id": "Max Planck Institute for Biology of Ageing"
+ },
+ {
+   "id": "Molecular and Cellular Biology Program, Stony Brook University"
+ },
+ {
+   "id": "Molecular Life Sciences Ph.D. Program"
+ },
+ {
+   "id": "MRC Clinical Sciences Centre, Imperial College London, Hammersmith Hospital"
+ },
+ {
+   "id": "MRC Clinical Sciences Centre, Imperial College London, Hammersmith Hospital Campus"
+ },
+ {
+   "id": "Oxford Centre for Diabetes, Endocrinology and Metabolism, Churchill Hospital, University of Oxford"
+ },
+ {
+   "id": "Oxford Centre for Diabetes, Endocrinology and Metabolism, University of Oxford, Churchill Hospital"
+ },
+ {
+   "id": "Oxford NIHR Biomedical Research Centre, Churchill Hospital"
+ },
+ {
+   "id": "Research Group Recombinant Protein Expression, Helmholtz Centre for Infection Research"
+ },
+ {
+   "id": "Roche Innovation Center Copenhagen"
+ },
+ {
+   "id": "Stony Brook University"
+ },
+ {
+   "id": "Swiss Institute for Experimental Cancer Research (ISREC), School of Life Sciences, Ecole Polytechnique Fédérale de Lausanne (EPFL)"
+ },
+ {
+   "id": "Swiss Institute of Bioinformatics"
+ },
+ {
+   "id": "Université de Lille 2, INSERM, European Genomic Institute for Diabetes"
+ },
+ {
+   "id": "University Hospital"
+ },
+ {
+   "id": "University of Basel, Faculty of Science"
+ },
+ {
+   "id": "University of California, San Diego"
+ },
+ {
+   "id": "University of North Carolina at Chapel Hill"
+ },
+ {
+   "id": "University of Zurich"
+ },
+ {
+   "id": "Vital-IT, Swiss Institute of Bioinformatics"
+ },
+ {
+   "id": "Wellcome Trust Centre for Human Genetics, University of Oxford"
+ },
+ {
+   "id": "Wistar Institute"
+ }
+];
+    
+var nodesDoi = [
+ {
+   "name": "Center for Integrative Genomics, Génopode, University of Lausanne",
+   "DOI1": "10.1101/gr.195404.115",
+ },
+ {
+   "name": "Université de Lille 2, INSERM, European Genomic Institute for Diabetes",
+   "DOI1": "10.1038/nm.3862",
+   "DOI2": "10.1172/JCI73066",
+ },
+ {
+   "name": "Babraham Institute",
+   "DOI1": "10.1038/nm.3862",
+ },
+ {
+   "name": "Institute of Laboratory Animal Science, University of Veterinary Medicine Vienna",
+   "DOI1": "10.1038/nm.3862",
+   "DOI2": "10.1007/s00109-015-1296-9",
+ },
+ {
+   "name": "Cell Isolation and Transplantation Center, Department of Surgery, University Hospitals and University of Geneva",
+   "DOI1": "10.1038/nm.3862",
+ },
+ {
+   "name": "Institute of Organic Chemistry, Center for Molecular Biosciences Innsbruck, University of Innsbruck",
+   "DOI1": "10.1073/pnas.1505231112",
+ },
+ {
+   "name": "Institute of Neuroscience, Soochow University",
+   "DOI1": "10.1016/j.molcel.2015.09.005",
+ },
+ {
+   "name": "Wistar Institute",
+   "DOI1": "10.1038/ncomms6379",
+ },
+ {
+   "name": "Research Group Recombinant Protein Expression, Helmholtz Centre for Infection Research",
+   "DOI1": "10.1038/ncomms8646",
+ },
+ {
+   "name": "Faculty of Medicine, University of Zurich",
+   "DOI1": "10.1172/JCI73066",
+   "DOI2": "10.1074/jbc.M115.676734",
+ },
+ {
+   "name": "Faculty of Science, University of Zurich",
+   "DOI1": "10.1016/j.cell.2014.07.044",
+   "DOI2": "10.1038/nature13895",
+   "DOI3": "10.1126/science.aaa3872",
+ },
+ {
+   "name": "Institute of Molecular Cancer Research, University of Zurich",
+   "DOI1": "10.1038/ncomms6379",
+ },
+ {
+   "name": "Institute of Molecular Life Sciences, University of Zurich",
+   "DOI1": "10.15252/embr.201540078",
+ },
+ {
+   "name": "University of Zurich",
+   "DOI1": "10.1007/s00109-015-1296-9",
+ },
+ {
+   "name": "Department of Gene Expression, Institute of Molecular Biology and Biotechnology, Adam Mickiewicz University",
+   "DOI1": "10.1093/nar/gkv794"
+ },
+ {
+   "name": "Friedrich Miescher Institute for Biomedical Research",
+   "DOI1": "10.1016/j.ymeth.2015.06.013",
+   "DOI2": "10.15252/embr.201540078"
+ },
+ {
+   "name": "MRC Clinical Sciences Centre, Imperial College London, Hammersmith Hospital Campus",
+   "DOI1": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "name": "Biozentrum, University of Basel",
+   "DOI1": "10.1126/science.aaa3870",
+   "DOI2": "10.15252/embr.201540078",
+   "DOI3": "10.1007/s00109-015-1326-7",
+   "DOI4": "10.1172/JCI73066"
+ },
+ {
+   "name": "Swiss Institute for Experimental Cancer Research (ISREC), School of Life Sciences, Ecole Polytechnique Fédérale de Lausanne (EPFL)",
+   "DOI1": "10.1038/ncomms6379",
+   "DOI2": "10.1016/j.tcb.2014.08.007"
+ },
+ {
+   "name": "Howard Hughes Medical Institute and Whitehead Institute for Biomedical Research",
+   "DOI1": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "name": "MRC Clinical Sciences Centre, Imperial College London, Hammersmith Hospital",
+   "DOI1": "10.1038/nm.3862"
+ },
+ {
+   "name": "Department of Anaesthesiology and Pain Medicine, Inselspital, University of Bern",
+   "DOI1": "10.15252/embr.201540078"
+ },
+ {
+   "name": "Department of Chemistry and Biochemistry, University of Bern",
+   "DOI1": "10.1080/15476286.2014.996459",
+   "DOI2": "10.1073/pnas.1505231112",
+   "DOI3": "10.1093/nar/gkv794"
+ },
+ {
+   "name": "Department of Clinical Research, University of Bern",
+   "DOI1": "10.1093/nar/gkv794"
+ },
+ {
+   "name": "Graduate School for Cellular and Biomedical Sciences, University of Bern",
+   "DOI1": "10.1080/15476286.2014.996459",
+   "DOI2": "10.1093/nar/gkv794"
+ },
+ {
+   "name": "Institute of Cell Biology, University of Bern",
+   "DOI1": "10.1093/nar/gkv794"
+ },
+ {
+   "name": "Department of Metabolic Diseases, Jagiellonian University Medical College",
+   "DOI1": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "name": "Oxford NIHR Biomedical Research Centre, Churchill Hospital",
+   "DOI1": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "name": "Computational and Systems Biology Program, Massachusetts Institute of Technology",
+   "DOI1": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "name": "Department of Biology, Massachusetts Institute of Technology",
+   "DOI1": "10.1016/j.molcel.2014.03.045"
+ },
+ {
+   "name": "Massachusetts Institute of Technology",
+   "DOI1": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "name": "University of Basel, Faculty of Science",
+   "DOI1": "10.15252/embr.201540078"
+ },
+ {
+   "name": "Department of Bioengineering and Therapeutic Sciences, California Institute for Quantitative Biosciences (QB3), University of California, San Francisco",
+   "DOI1": "10.1016/j.cell.2014.07.044"
+ },
+ {
+   "name": "University of North Carolina at Chapel Hill",
+   "DOI1": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "name": "Competence Center of Systems Physiology and Metabolic Disease, ETH Zurich",
+   "DOI1": "10.1016/j.molcel.2014.03.045",
+   "DOI2": "10.1038/nm.3862",
+   "DOI3": "10.1172/JCI73066"
+ },
+ {
+   "name": "Institute of Biochemistry, Department of Biology, ETH Zurich",
+   "DOI1": "10.1016/j.febslet.2014.08.013",
+   "DOI2": "10.1016/j.tcb.2014.08.007"
+ },
+ {
+   "name": "Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich",
+   "DOI1": "10.1016/j.molcel.2015.09.005",
+   "DOI2": "10.1093/nar/gku1116",
+   "DOI3": "10.1016/j.cell.2014.07.044",
+   "DOI4": "10.1038/nature13895",
+   "DOI5": "10.1038/ncomms8646",
+   "DOI6": "10.1126/science.aaa3870",
+   "DOI7": "10.1126/science.aaa3872"
+ },
+ {
+   "name": "Institute of Molecular Health Sciences, Department of Biology, ETH Zurich",
+   "DOI1": "10.1016/j.molcel.2014.03.045",
+   "DOI2": "10.1038/nm.3862",
+   "DOI3": "10.1172/JCI73066",
+   "DOI4": "10.1074/jbc.M115.676734",
+   "DOI5": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "name": "Institute of Molecular Systems Biology, Department of Biology, ETH Zurich",
+   "DOI1": "10.1016/j.cell.2014.07.044",
+   "DOI2": "10.1038/nature13895",
+   "DOI3": "10.1126/science.aaa3872"
+ },
+ {
+   "name": "Bioinformatics and Biostatistics Core Facility, EPFL, Swiss Institute of Bioinformatics",
+   "DOI1": "10.1038/ncomms6379"
+ },
+ {
+   "name": "Swiss Institute of Bioinformatics",
+   "DOI1": "10.15252/embr.201540078"
+ },
+ {
+   "name": "Vital-IT, Swiss Institute of Bioinformatics",
+   "DOI1": "10.1101/gr.195404.115"
+ },
+ {
+   "name": "Department of Applied Mathematics and Statistics, Stony Brook University",
+   "DOI1": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "name": "Molecular and Cellular Biology Program, Stony Brook University",
+   "DOI1": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "name": "Stony Brook University",
+   "DOI1": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "name": "Howard Hughes Medical Institute, Laboratory of RNA Molecular Biology, The Rockefeller University",
+   "DOI1": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "name": "Oxford Centre for Diabetes, Endocrinology and Metabolism, Churchill Hospital, University of Oxford",
+   "DOI1": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "name": "Oxford Centre for Diabetes, Endocrinology and Metabolism, University of Oxford, Churchill Hospital",
+   "DOI1": "10.1172/JCI73066"
+ },
+ {
+   "name": "Ecole Polytechnique Fédérale de Lausanne (EPFL), School of Life Sciences",
+   "DOI1": "10.1038/ncomms6379"
+ },
+ {
+   "name": "Department of Clinical Sciences Malmö, Lund University Diabetes Centre, Lund University",
+   "DOI1": "10.1172/JCI73066"
+ },
+ {
+   "name": "Cold Spring Harbor Laboratory, Cold Spring Harbor",
+   "DOI1": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "name": "University of California, San Diego",
+   "DOI1": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "name": "Department of Biochemistry, Henry Wellcome Laboratories of Structural Biology, University of Leicester",
+   "DOI1": "10.1093/nar/gku1116"
+ },
+ {
+   "name": "Wellcome Trust Centre for Human Genetics, University of Oxford",
+   "DOI1": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "name": "Architecture et Réactivité des ARN, CNRS/Université de Strasbourg, Institut de Biologie Moléculaire et Cellulaire",
+   "DOI1": "10.1073/pnas.1505231112"
+ },
+ {
+   "name": "Max Planck Institute for Biology of Ageing",
+   "DOI1": "10.1016/j.ymeth.2015.06.013"
+ },
+ {
+   "name": "Molecular Life Sciences Ph.D. Program",
+   "DOI1": "10.1016/j.febslet.2014.08.013"
+ },
+ {
+   "name": "Institute of Laboratory Animal Science, Vetmeduni Vienna",
+   "DOI1": "10.1172/JCI73066"
+ },
+ {
+   "name": "University Hospital",
+   "DOI1": "10.1007/s00109-015-1296-9"
+ },
+ {
+   "name": "Envisagenics, Inc.",
+   "DOI1": "10.1016/j.molcel.2015.09.005"
+ },
+ {
+   "name": "Roche Innovation Center Copenhagen",
+   "DOI1": "10.1016/j.molcel.2015.09.005"
+ }
+];
+
+var links = [];         
+    
+    for (var k = 0; k < nodesLink.length; k++) {
+    for (var l = k + 1; l < nodesLink.length; l++) {
+        if (nodesLink[k].group === nodesLink[l].group) {
+            links.push({
+                source: nodesLink[k].id,
+                target: nodesLink[l].id
+            });
+        }
+    }
+};
+   
+var link = wrapper.append("g")
+    .attr("class", "links")
+    .selectAll("line")
+    .data(links)
+    .enter().append("line")
+      .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+    
+var value = [1,	1,	1,	4,	1,	1,	1,	3,	1,	1,	1,	1,	1,	1,	3,	1,	1,	1,	1,	1,	1,	2,	3,	2,	2,	1,	1,	2,	1,	2,	1,	7,	1,	5,	1,	3,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	2,	1,	2,	1,	1,	1,	1,	1,	1,	1,	1];
+ 
+var colorbyCountry= ["Switzerland",
+"United States",
+"United Kingdom",
+"Sweden",
+"Austria",
+"Switzerland",
+"France",
+"Switzerland",
+"United States",
+"Switzerland",
+"United States",
+"United Kingdom",
+"United States",
+"United States",
+"Switzerland",
+"Switzerland",
+"Switzerland",
+"Poland",
+"Poland",
+"Switzerland",
+"United States",
+"Switzerland",
+"Switzerland",
+"Switzerland",
+"Switzerland",
+"United States",
+"United States",
+"Switzerland",
+"Switzerland",
+"Switzerland",
+"Austria",
+"Switzerland",
+"Switzerland",
+"Switzerland",
+"Switzerland",
+"Switzerland",
+"China",
+"Austria",
+"United States",
+"Germany",
+"United States",
+"Switzerland",
+"United Kingdom",
+"United Kingdom",
+"United Kingdom",
+"United Kingdom",
+"United Kingdom",
+"Germany",
+"Denmark",
+"United States",
+"Switzerland",
+"Switzerland",
+"France",
+"Poland",
+"Switzerland",
+"United States",
+"United States",
+"Switzerland",
+"Switzerland",
+"United Kingdom",
+"United States"
+];
+   
+var tool_tip = d3.tip()
+      .attr("class", "d3-tip")
+      .offset([-8, 0])
+      .html(function(d) { return d.id; });
+    
+wrapper.call(tool_tip);
+    
+var node = wrapper.append("g")
+    .attr("class", "nodes")
+    .selectAll("circle")
+    .data(nodes)
+    .enter().append("circle")
+      .attr("r", function(d,i) {return Math.sqrt(value[i])*4;} )
+      .attr("fill", function(d,i) {return colorScheme(colorbyCountry[i]);})
+      .on('mouseover', tool_tip.show)
+      .on('mouseout', tool_tip.hide)
+      .on("click", function(d) {
+          var obj = _.find(nodesDoi, function(o) { return o.name === d.id; });
+          console.log(obj);
+          var str = "";
+          for (var property in obj) {
+              str += property + ": " + obj[property]+"\n ";
+          }
+          alert(str);
+          })
+      .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));     
+
+simulation
+      .nodes(nodes)
+      .on("tick", ticked);
+
+simulation.force("link")
+      .links(links);
+
+simulation.force("charge")
+        .theta([1.5])
+        .distanceMax([130]);
+    
+function ticked() {
+    link
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    node
+        .attr("cx", function(d) { return d.x = Math.max(5, Math.min(width - 5, d.x)); })
+        .attr("cy", function(d) { return d.y = Math.max(5, Math.min(height - 5, d.y)); });
+  };
+
+function dragstarted(d) {
+  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function dragged(d) {
+  d.fx = d3.event.x;
+  d.fy = d3.event.y;
+}
+
+function dragended(d) {
+  if (!d3.event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+
+}
+  
+var legendRectSize = 18;                                  
+
+var legendRectSpacing = 4;  
+
+var legend = wrapper.selectAll('.legend')                     
+          .data(colorScheme.domain())                                   
+          .enter()                                                
+          .append('g')                                            
+          .attr('class', 'legend')                              
+         .attr('transform', function(d, i) {                     
+            var height = legendRectSize + legendRectSpacing;       
+            var offset =  colorScheme.domain().length;    
+            var horz = 3 * legendRectSize - offset;                       
+            var vert = i * height *1.35 ;                       
+            return 'translate(' + horz /4 + ',' + vert + ')';        
+          });     
+             
+legend.append('rect')                                     
+       .attr('width', legendRectSize)                          
+          .attr('height', 15) 
+          
+          .style('fill', colorScheme)                                   
+          .style('stroke', colorScheme);                                
+
+legend.append('text')                                     
+          .attr('x', legendRectSize + legendRectSpacing)              
+          .attr('y', legendRectSize - legendRectSpacing)              
+          .text(function(d) { return d; });                       
+         
+</script>
+</div>

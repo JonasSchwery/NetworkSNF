@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+  <title>Visualisierung der Daten "RNA and Disease"</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+  // Add smooth scrolling to all links in navbar + footer link
+  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
+
+  // Make sure this.hash has a value before overriding default behavior
+  if (this.hash !== "") {
+
+    // Prevent default anchor click behavior
+    event.preventDefault();
+
+    // Store hash
+    var hash = this.hash;
+
+    // Using jQuery's animate() method to add smooth page scroll
+    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+    $('html, body').animate({
+      scrollTop: $(hash).offset().top
+    }, 900, function(){
+
+      // Add hash (#) to URL when done scrolling (default click behavior)
+      window.location.hash = hash;
+      });
+    } // End if 
+  });
+})
+</script>
+</head>
+    
+<style>
+.navbar {
+    margin-bottom: 0;
+    background-color: #2f2f2f;
+    z-index: 9999;
+    border: 0;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    letter-spacing: 1px;
+    border-radius: 0;
+}
+.navbar li a, .navbar .navbar-brand {
+    color: #fff !important;
+}
+.navbar-nav li a:hover, .navbar-nav li.active a {
+    color: #f4511e !important;
+    background-color: #fff !important;
+}
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #fff !important;
+}  
+</style>
+
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#daten">Die Daten &amp; Erstellung</a></li>
+        <li><a href="#beschreibung">Beschreibung der App</a></li>
+        <li><a href="#erkenntnisse">Erkenntnisse</a></li>
+        <li><a href="#weiteres">Weitere Infos</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    
+    <div class="container-fluid bg-1 text-center">
+    <img src="Startbild.jpg" class="img-responsive img-circle" style="display:inline" alt="NCCR">
+    </div>
+    
+    <div class="container-fluid bg-6 text-center">    
+        <a href="index.html">Zurück zur Visualisierung</a>    
+    </div>
+            
+    <div id="daten" class="container-fluid bg-4 text-center">
+        <h2>Die Daten &amp; Erstellung der App</h2>
+        <p>Wir erhielten die Daten gleich im Anschluss an die Präsentationsvorstellung der verschiedenen Data Coaches von François Delavy       vom SNF per USB-Stick.  In diesem Abschnitt wird dieser Datensatz kurz erklärt.
+            Alle Forscher die am RNA &amp; Disease Projekt teilnehmen, übermitteln dem SNSF jährlich ihre veröffentlichten Publikationen im Zusammenhang mit dem Projekt. Diese Daten enthalten die Forschungsgruppe und einige Informationen über die Publikation wie etwa den DOI, den Titel, die Namen der Autoren und so weiter. Mit diesen Daten wird anschliessend beim schweizerischen Nationalfonds gearbeitet, die Datenqualität ist dabei davon abhängig, wie gut die Mitglieder ihre Einträge vornehmen.<br/> Zum Zeitpunkt als wir die Daten erhielten waren dies 54 Publikationen. Da das Projekt erst im Jahre 2014 startete, handelt es sich nur um Publikationen der letzten 3 Jahre. Ein NCCR Projekt kann aber bis zu 12 Jahre dauern, weshalb es sich zum Ende um sehr viele Daten handeln kann und eine Visualisierung umso mehr Nutzen schaffen kann. Gerade in den nächsten Jahren dürften sehr viele weitere Publikationen gemeldet werden, da es einige Zeit dauert und viel Aufwand für eine Publikation geleistet wird. Die Daten wurden anschliessend vom SNF (Im Falle unserer Daten von François Delavy) mittels Scopus API ergänzt. Bei dieser Ergänzung handelt es sich um Meta-Daten zu den Publikationen und zu den Autoren; namentlich die Zugehörigkeiten aller Autoren (das Forschungsinstitut) und das jeweilige Land. Bei dieser Suche wurden nicht alle Publikationen gefunden, vier Publikationen befinden sich deshalb nicht in der Visualisierung. Bei einer weiteren Publikation fehlten ausserdem die Meta-Daten, weshalb der Datensatz auf schliesslich auf 49 Publikationen reduziert wurde. Weiter ist die Datenqualität wiederum abhängig von den Angaben auf Scopus. Deshalb waren in den Namen der Forschungsinstitute zum Teil Fehler enthalten, wir haben dies gemeldet, und François Delavy hat die Daten für uns ausgebessert. In einem ersten Schritt haben wir die Daten dann so bereinigt, dass nur noch die Forschungsinstitute und die DOIs (Publikationen) enthalten waren. Diese Daten mussten wir anschliessend parsen, damit für jede Publikation jede Forschungsstelle einzeln angezeigt wird. Mit diesem Datensatz haben wir dann begonnen, unser Netzwerk zu erstellen. 
+            </p>
+    </div>
+    
+    <div class="container-fluid bg-9 text-center">    
+        <img src="datensatz1.jpg" class="img-responsive" style="display:inline" alt="NCCR">
+        <p><br/><em>Abbildung 1:</em> Zu sehen ist oben ein Ausschnitt aus dem ursprünglichen Datensatz der CSV-Datei. Unten ist ein Ausschnitt aus dem Datensatz, mit dem wir mit dem Visualisieren begonnen haben. DOI ist die Publikation, affil_names ist der Name der Forschunggstelle. Gut zu sehen ist auf der unteren Abbildung, wie wir die Daten geparst haben. Die Einträge 3 bis 10 waren im ursprünglichen Datensatz auf einer Zeile, da sie zur selben Publikation gehören.</p>    
+    </div>
+    
+    <div class="container-fluid bg-4 text-center">
+        <p>
+        Das Problem in diesem Datensatz war, dass einige Forschungsinstitute an mehreren Publikationen beteiligt waren und es dadurch Duplikate bei den Nodes gab. In einem weiteren Schritt wurde deshalb ein Datensatz nur mit den Forschungsinstituten erstellt und die Duplikate wurden entfernt. Diese Datei wurde in ein JSON-File konvertiert, direkt als Variable in unsere Visualisierung aufgenommen (nicht als externes JSON-File) und so hatten wir unsere Nodes. 
+        </p>
+            
+        <div class="container-fluid bg-9 text-center">    
+        <img src="nodes.jpg" class="img-responsive" style="display:inline" alt="NCCR">
+        <p><br/><em>Abbildung 2:</em> Jede "id" entspricht einer Node.</p>
+    </div>
+    </div>
+        
+    <div class="container-fluid bg-4 text-center">
+        <p>
+        Um ein Netzwerk zu erstellen ist normalerweise ein Datensatz mit den Einträgen «source» und «target» erforderlich. Um dieses Problem zu umgehen und unsere Verbindungen direkt aus dem File mit den Forschungsinstituten und Publikation zu generieren, mussten wir wieder auf unser erstes File zurück greifen und einen for loop erstellen:
+        </p>
+            
+        <div class="container-fluid bg-9 text-center">    
+        <img src="forloop.jpg" class="img-responsive" style="display:inline" alt="NCCR">
+        <p><br/><em>Abbildung 3:</em> Oben ein Auszug der Daten, die für die Links benötigt wurden. "id" ist das Forschungsinstitut und "group" die Publikation. 
+        </p>
+        </div>
+            
+        <p>Dieser loop geht das File durch und erstellt überall wo die gleiche Publikation eingetragen ist, einen Link mit einer «source» und einem «target». Dadurch konnten wir unsere Links erstellen und hatten somit die Basis für unser Netzwerk.
+        Im Verlauf des Projektes kamen dann zu diesen Daten bei jeder Forschungsstelle noch das Land dazu, damit alle Forschungsinstitute aus einem Land in der Visualisierung dieselbe Farbe haben und in der Visualisierung als Legende beschrieben werden konnten. Diese Daten befanden sich auch im originalen Datensatz, wir mussten sie auch parsen, genau gleich wie wir dies zuvor für die Forschunggstellen gemacht haben. Diese Daten wurden wiederum als Variable in unsere Datei aufgenommen. In einem letzten Schritt haben wir dann noch einen zusätzlichen Datensatz erstellt, bei dem für jede Forschungsstelle alle Publikationen angezeigt werden. Dies war nötig um die DOIs anzuzeigen wenn auf die Node geklickt wird.</p>
+    </div>
+    
+    <div class="container-fluid bg-9 text-center">    
+        <img src="datensatz2.jpg" class="img-responsive" style="display:inline" alt="NCCR">
+        <p><br/><em>Abbildung 3:</em> Ausschnitt aus dem JSON-File der letzten Daten, die wir für die Visualisierung verwendet haben. Für jede Forschungsstelle ("name") werden die zugehörigen Publikationen ("DOI") angezeigt.</p>    
+    </div>
+    
+    <div id="beschreibung" class="container-fluid bg-4 text-center">
+        <h3>Beschreibung der Open Data App</h3>
+        <p>Die App zeigt die verschiedenen am Projekt beteiligten Forschungsinstitute als Nodes. Durch die verschiedenen Farben wird schneller ersichtlich, welche Nodes aus der Schweiz sind und dadurch mögliche Mitglieder des Projekts sind. In der Legende links wird jeweils für jede Farbe das Ursprungsland angezeigt. Je mehr eine Forschungsstelle publiziert hat (an Publikationen beteiligt war), desto grösser wird die Node. Durch den mouseover-Effekt wird bei der Node der Name angezeigt, wenn man darüberfährt. Durch einen Klick auf eine Node werden ein Alert mit dem Namen der Forschungsstelle sowie die DOIs angezeigt. Mit den Buttons oberhalb des Netzwerks können die drei verschiedenen Netzwerke angeschaut werden. Für den SNF ist die Entwicklung sehr wichtig, weshalb nicht jedes Jahr einzeln, sondern die Kumulation im Vordergrund standen. Das Netzwerk Jahr 1 ist also aus dem Jahr 2014, das Netzwerk Jahre 1-2 aus den Jahren 2014 und 2015 und das Netzwerk Jahre 1-3 schliesslich für die Jahre 2014-2016. Die App ist ausserdem responsive, passt sich also der Bildschirmgrösse automatisch an.</p>
+    </div>
+    
+    <div class="container-fluid bg-9 text-center">    
+        <img src="tooltip.jpg" class="img-responsive" style="display:inline" alt="NCCR">
+        <p><br/><em>Abbildung 4:</em> Screenshot aus der Visualisierung, Netzwerk Jahre 1-3. Auf diesem Bild sind der Mouseover-Effekt sowie der Alert, der bei einem Klick erscheint, zu sehen. Durch den Alert werden die verschiedenen DOIs sichtbar, ausserdem ist so die Anzahl der DOIs pro Forschungsstelle genau erkennbar.</p>    
+    </div>
+   
+    <div id="erkenntnisse" class="container-fluid bg-4 text-center">
+        <h3>Erkenntnisse und weiterführende Informationen</h3>
+        <p>Der ursprüngliche gewünschte Output von François Delavy wurde mit dem Netzwerk erreicht. Es ist sehr übersichtlich, welche Forschungsinstitute im Projekt "RNA and Disease" durch Co-Publikationen zusammengearbeitet haben. In der Legende kann zudem bei Interesse nachgeschaut werden, um welches Land es sich handelt und wie viele Länder bereits beteiligt waren. Da sehr viele der Nodes dunkelblau sind, ist gut erkennbar, dass sehr viele Institute aus der Schweiz beteiligt sind. Durch die Visualisierung wird ausserdem schnell offensichtlich, welche Forschungsinstitute bis jetzt am meisten publiziert haben (oder genauer, dies dem SNF bereits gemeldet haben). Es ist augenblicklich zu sehen, dass die Nodes des «Department of Chemistry and Biochemistry, University of Bern» sowie das «Institute of Molecular Biology and Biophysics, Department of Biology, ETH Zurich» am grössten sind und folglich am meisten publiziert haben. Weiter ist im "Netzwerk Jahre 1-3" sehr gut erkennbar, dass es insgesamt drei Institute gibt (2 Mal von der ETH Zürich, 1 Mal von der Universität Bern), die viel publiziert haben und alle ihr "eigenes Netzwerk" haben mit dem sie zusammengearbeitet haben.</p>  
+    </div>
+ 
+    <div class="container-fluid bg-9 text-center">    
+        <img src="netzwerke.jpg" class="img-responsive" style="display:inline" alt="NCCR">
+        <p><br/><em>Abbildung 5:</em> Schwarz eingekreist die drei aktivsten Forschungsinstitute mit ihrem "eigenen" Netzwerk. Mit Vorsicht muss bei die rot eingekreiste Forschungsstelle betrachtet werden, sie hat als einzige mit zwei der grossen Forschungsinstitute publiziert.</p>    
+    </div>
+    
+    <footer class="container-fluid bg-8 text-center">
+        <p>Der Quellcode der Applikation (unterliegt der Gnu General Public License v3.0) sowie die Rohdaten sind auf <a href="https://github.com/JonasSchwery/NetworkSNF" target="_blank" style="color:#f4511e">Github </a>verfügbar.</p>
+        <p>Das Code-Snippet mit dem wir begonnen haben ist unter folgendem <a href="https://bl.ocks.org/mbostock/4062045" target="_blank" style="color:#f4511e">Link </a>auffindbar.</p> 
+    </footer>
+    
+</body>
+</html>
